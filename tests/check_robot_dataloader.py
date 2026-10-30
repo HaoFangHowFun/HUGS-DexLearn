@@ -31,21 +31,45 @@ def cfg_select(config: DictConfig, key: str, default):
     return default if value is None else value
 
 
+SPARSE_KEYS = {"coors", "feats", "original2quantize", "quantize2original"}
+
+
 def store_sample(batch_data, sample_idx):
+    """Select a dense sample and rebase its packed sparse coordinates/maps."""
     sample = {}
     for key, value in batch_data.items():
+        if key in SPARSE_KEYS:
+            continue
         if torch.is_tensor(value):
             sample[key] = value[sample_idx : sample_idx + 1].clone()
         elif isinstance(value, list):
             sample[key] = [value[sample_idx]]
         else:
             sample[key] = value
+
+    if "coors" in batch_data:
+        # Sparse rows are voxels, not batch entries. Preserve their ordering.
+        mask = batch_data["coors"][:, 0] == sample_idx
+        sample["coors"] = batch_data["coors"][mask].clone()
+        sample["coors"][:, 0] = 0
+        sample["feats"] = batch_data["feats"][mask].clone()
+        point_num = batch_data["point_clouds"].shape[1]
+        point_start = sample_idx * point_num
+        sample["original2quantize"] = batch_data["original2quantize"][mask] - point_start
+        inverse = batch_data["quantize2original"]
+        voxel_ids = torch.nonzero(mask, as_tuple=True)[0]
+        local_ids = torch.full((len(mask),), -1, dtype=inverse.dtype, device=inverse.device)
+        local_ids[voxel_ids] = torch.arange(len(voxel_ids), device=inverse.device, dtype=inverse.dtype)
+        sample["quantize2original"] = local_ids[inverse[point_start : point_start + point_num]]
     return sample
 
 
 def merge_samples(samples):
+    """Merge selected samples, offsetting voxel and original-point indices."""
     merged = {}
     for key in samples[0]:
+        if key in SPARSE_KEYS:
+            continue
         first_value = samples[0][key]
         if torch.is_tensor(first_value):
             merged[key] = torch.cat([sample[key] for sample in samples], dim=0)
@@ -53,6 +77,20 @@ def merge_samples(samples):
             merged[key] = [sample[key][0] for sample in samples]
         else:
             merged[key] = [sample[key] for sample in samples]
+
+    if "coors" in samples[0]:
+        sparse = {key: [] for key in SPARSE_KEYS}
+        point_offset = voxel_offset = 0
+        for batch_idx, sample in enumerate(samples):
+            coors = sample["coors"].clone()
+            coors[:, 0] = batch_idx
+            sparse["coors"].append(coors)
+            sparse["feats"].append(sample["feats"])
+            sparse["original2quantize"].append(sample["original2quantize"] + point_offset)
+            sparse["quantize2original"].append(sample["quantize2original"] + voxel_offset)
+            point_offset += sample["point_clouds"].shape[1]
+            voxel_offset += len(coors)
+        merged.update({key: torch.cat(values, dim=0) for key, values in sparse.items()})
     return merged
 
 

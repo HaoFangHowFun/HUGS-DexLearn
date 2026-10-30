@@ -3716,8 +3716,9 @@ def solve_stage_pose_batch(stage_qpos_batch: np.ndarray, robot_assets: dict, dev
 
     Returns:
         Tuple ``(robot_pose, right_success, left_success)``. ``robot_pose`` is
-        shaped ``(B, 7 + joint_num)`` and success arrays are boolean numpy
-        arrays shaped ``(B,)``.
+        shaped ``(B, 7 + URDF joint count)`` in the helper's joint order.
+        Success arrays are boolean numpy arrays shaped ``(B,)``; an absent
+        hand has a false success flag because no IK was attempted.
     """
     import torch
     from pytorch3d import transforms as pttf
@@ -3741,23 +3742,30 @@ def solve_stage_pose_batch(stage_qpos_batch: np.ndarray, robot_assets: dict, dev
     left_matrix[:, :3, :3] = pttf.quaternion_to_matrix(left_quat)
     left_matrix[:, :3, 3] = left_trans
 
-    right_sol = robot_assets["robot_helper"].solve_ik_batch(robot_assets["wrist_link_names"][0], right_matrix)
-    left_sol = robot_assets["robot_helper"].solve_ik_batch(robot_assets["wrist_link_names"][1], left_matrix)
-
-    combined_q = torch.zeros((batch_size, len(robot_assets["joint_names"])), device=device, dtype=torch.float32)
-    right_q = right_sol["q"].to(device=device, dtype=combined_q.dtype)
-    left_q = left_sol["q"].to(device=device, dtype=combined_q.dtype)
-    combined_q[:, robot_assets["right_arm_indices"]] = right_q[:, robot_assets["right_arm_indices"]]
-    combined_q[:, robot_assets["left_arm_indices"]] = left_q[:, robot_assets["left_arm_indices"]]
-    combined_q[:, robot_assets["right_hand_indices"]] = right_joint
-    combined_q[:, robot_assets["left_hand_indices"]] = left_joint
+    helper = robot_assets["robot_helper"]
+    chain_joint_names = helper.robot_joint_names
+    combined_q = torch.zeros((batch_size, len(chain_joint_names)), device=device, dtype=torch.float32)
+    success = {side: np.zeros(batch_size, dtype=bool) for side in ("right", "left")}
+    for side, prefix, matrix, hand_joint in (
+        ("right", "r", right_matrix, right_joint),
+        ("left", "l", left_matrix, left_joint),
+    ):
+        wrist_names = [name for name in robot_assets["wrist_link_names"] if name.startswith(prefix + "h_")]
+        if not wrist_names:
+            continue
+        sol = helper.solve_ik_batch(wrist_names[0], matrix)
+        arm_indices = [i for i, name in enumerate(chain_joint_names) if name.startswith(prefix + "a_")]
+        combined_q[:, arm_indices] = sol["q"][:, arm_indices].to(device=device, dtype=combined_q.dtype)
+        # Saved finger values follow metadata order; IK and rendering use URDF order.
+        hand_names = [robot_assets["joint_names"][i] for i in robot_assets[side + "_hand_indices"]]
+        hand_indices = [chain_joint_names.index(name) for name in hand_names]
+        combined_q[:, hand_indices] = hand_joint
+        success[side] = sol["success"].detach().cpu().numpy().astype(bool).reshape(-1)
 
     robot_pose = torch.zeros((batch_size, 7 + combined_q.shape[-1]), device=device, dtype=torch.float32)
     robot_pose[:, 3] = 1.0
     robot_pose[:, 7:] = combined_q
-    right_success = right_sol["success"].detach().cpu().numpy().astype(bool).reshape(-1)
-    left_success = left_sol["success"].detach().cpu().numpy().astype(bool).reshape(-1)
-    return robot_pose, right_success, left_success
+    return robot_pose, success["right"], success["left"]
 
 
 def task_visualize_robot(config: DictConfig) -> None:
@@ -3875,7 +3883,9 @@ def task_visualize_robot(config: DictConfig) -> None:
                     axis=0,
                 )
                 robot_pose, right_ok, left_ok = solve_stage_pose_batch(stage_qpos_batch, robot_assets, config.device)
-                robot_assets["robot_visualizer"].set_robot_parameters(robot_pose, joint_names=robot_assets["joint_names"])
+                robot_assets["robot_visualizer"].set_robot_parameters(
+                    robot_pose, joint_names=robot_assets["robot_helper"].robot_joint_names
+                )
                 for entry_idx, entry in enumerate(pending_entries):
                     entry["scene_elements"].append(
                         robot_assets["robot_visualizer"].get_robot_trimesh_data(

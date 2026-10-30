@@ -1,0 +1,226 @@
+{
+  "scene_id": "core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0",
+  "object_id": "core_bottle_46910c75d17ef8554c6e2707eea5c15e",
+  "grasp_index": 0,
+  "succ_flag": true,
+  "units": "meters; joint angles radians; quaternions wxyz",
+  "distance_query": "Joint translation/scaling of mesh and queries for numerical conditioning; distances converted back to meters.",
+  "files": {
+    "grasp": "/home/hao-fang/hugs-dataset/BimanBODex_single_hand_demo_v2/shadow/right_full/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0.npy",
+    "scene": "/home/hao-fang/hugs-dataset/object/DGN_2k/scene_cfg/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0.npy",
+    "mesh": "/home/hao-fang/hugs-dataset/object/DGN_2k/processed_data/core_bottle_46910c75d17ef8554c6e2707eea5c15e/mesh/simplified.obj",
+    "point_cloud": "/home/hao-fang/hugs-dataset/object/DGN_2k/processed_data/core_bottle_46910c75d17ef8554c6e2707eea5c15e/complete_point_cloud.npy",
+    "hand_xml": "/home/hao-fang/hugs-workspace/HUGS-DexGraspBench/assets/hand/shadow/right_hand_v2.xml"
+  },
+  "sha256": {
+    "/home/hao-fang/hugs-dataset/BimanBODex_single_hand_demo_v2/shadow/right_full/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0.npy": "efc9ffc751caf811a0fa0ecbf0e5e43639b6dbc0da1660b52175d82dda1a0d34",
+    "/home/hao-fang/hugs-dataset/object/DGN_2k/scene_cfg/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0.npy": "109d21836e07b3433f5697fb35377909661bbe3a3c7ae9cb206a6cbb1027b74e",
+    "/home/hao-fang/hugs-dataset/object/DGN_2k/processed_data/core_bottle_46910c75d17ef8554c6e2707eea5c15e/mesh/simplified.obj": "65809d9d478beaf887dc7c9d40974bc83ecfe1069cb5b398467ca11588228cf1",
+    "/home/hao-fang/hugs-dataset/object/DGN_2k/processed_data/core_bottle_46910c75d17ef8554c6e2707eea5c15e/complete_point_cloud.npy": "bb73c59875828d834715cc57c81ed3300ed53a292aa3cc1ad23abe6853b1af25",
+    "/home/hao-fang/hugs-workspace/HUGS-DexGraspBench/assets/hand/shadow/right_hand_v2.xml": "e76a23aa055d18e09a736ff87a0fa6c6e07580bc773d1a7434e56dc5459c88c5"
+  },
+  "object_scale": [
+    0.081,
+    0.081,
+    0.081
+  ],
+  "object_pose_wxyz": [
+    0.013427206325341445,
+    -0.04886996089637322,
+    0.03283242944762076,
+    0.5632464436147133,
+    0.39165145802917645,
+    -0.6404101474271008,
+    0.34530772110017577
+  ],
+  "point_count": 4096,
+  "point_cloud_storage_dtype": "float16",
+  "float16_rounding_envelope_max_norm_m": 2.421980824773406e-05,
+  "object_quaternion_norm": 0.9999999999999999,
+  "dexlearn_vs_float64_world_transform_max_abs_error_m": 1.391009149531719e-08,
+  "point_to_bodex_surface_m": {
+    "mean": 4.819977538147042e-06,
+    "rms": 6.0053203552974375e-06,
+    "median": 4.212937943078192e-06,
+    "p95": 1.1436142841367209e-05,
+    "max": 1.9733082610913836e-05,
+    "count": 4096
+  },
+  "point_to_benchmark_convex_piece_surfaces_m": {
+    "mean": 9.503634209300933e-05,
+    "rms": 0.00011348187292416784,
+    "median": 9.122650664960031e-05,
+    "p95": 0.0001679287385274732,
+    "max": 0.0007191643027671334,
+    "count": 4096
+  },
+  "local_point_to_bodex_surface_normalized_units": {
+    "mean": 5.950868014196399e-05,
+    "rms": 7.414072949925352e-05,
+    "median": 5.2013933286342866e-05,
+    "p95": 0.00014121827130246566,
+    "max": 0.00024351504339945713,
+    "count": 4096
+  },
+  "world_bounds_m": {
+    "point_cloud": [
+      [
+        -0.04895178601145744,
+        -0.10828839242458344,
+        -0.0002185031771659851
+      ],
+      [
+        0.08644413203001022,
+        -0.0010278262197971344,
+        0.059546779841184616
+      ]
+    ],
+    "bodex_mesh": [
+      [
+        -0.04902873704688896,
+        -0.10905658669591523,
+        -0.00026609169036365815
+      ],
+      [
+        0.08651895970612988,
+        -0.0008792056186694291,
+        0.06524909713601064
+      ]
+    ],
+    "benchmark_collision": [
+      [
+        -0.04909155340678013,
+        -0.10928180884482916,
+        -0.0001712746185220139
+      ],
+      [
+        0.08648617972446865,
+        -0.000981707090519597,
+        0.06607380446642758
+      ]
+    ]
+  },
+  "point_cloud_minus_mesh_bounds_m": [
+    [
+      7.695103543151754e-05,
+      0.0007681942713317902,
+      4.7588513197673044e-05
+    ],
+    [
+      -7.482767611965979e-05,
+      -0.00014862060112770525,
+      -0.005702317294826023
+    ]
+  ],
+  "benchmark_minus_bodex_bounds_m": [
+    [
+      -6.281635989117268e-05,
+      -0.00022522214891393388,
+      9.481707184164426e-05
+    ],
+    [
+      -3.277998166123508e-05,
+      -0.00010250147185016795,
+      0.0008247073304169378
+    ]
+  ],
+  "wrist_fk": {
+    "pregrasp": {
+      "translation_max_abs_error_m": 0.0,
+      "rotation_matrix_max_abs_error": 4.440892098500626e-16,
+      "joint_targets_max_abs_error": 0.0,
+      "quaternion_norm": 1.0
+    },
+    "grasp": {
+      "translation_max_abs_error_m": 0.0,
+      "rotation_matrix_max_abs_error": 5.551115123125783e-16,
+      "joint_targets_max_abs_error": 0.0,
+      "quaternion_norm": 0.9999999999999999
+    },
+    "squeeze": {
+      "translation_max_abs_error_m": 0.0,
+      "rotation_matrix_max_abs_error": 5.551115123125783e-16,
+      "joint_targets_max_abs_error": 0.0,
+      "quaternion_norm": 0.9999999999999999
+    }
+  },
+  "skipped_benchmark_meshes": [],
+  "training": {
+    "sample_count": 1024,
+    "centroid_m": [
+      0.021898051723837852,
+      -0.0498228520154953,
+      0.02989288419485092
+    ],
+    "z_rotation_degrees": 37.0,
+    "centering_point_max_abs_error_m": 0.0,
+    "centering_hand_max_abs_error_m": 0.0,
+    "augmented_point_max_abs_error_m": 0.0,
+    "augmented_rotation_max_abs_error": 0.0,
+    "palm_frame_point_invariance_max_abs_error_m_by_stage": [
+      1.8299657900122668e-09,
+      1.8124541451003395e-09,
+      1.8124541451003395e-09
+    ],
+    "fixed_left_unchanged": true,
+    "right_joints_unchanged": true
+  },
+  "provenance": {
+    "matching_evaluation_files": [
+      "/home/hao-fang/hugs-workspace/HUGS-DexGraspBench/output/single_hand_demo_v2_right_full_shadow/evaluation/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0/14_grasp.npy"
+    ],
+    "candidate_index": 14,
+    "evaluation_success": true,
+    "formatted_path": "/home/hao-fang/hugs-workspace/HUGS-DexGraspBench/output/single_hand_demo_v2_right_full_shadow/graspdata/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0/14_grasp.npy",
+    "bodex_path": "/home/hao-fang/hugs-workspace/HUGS-BODex/src/curobo/content/assets/output/sim_shadow/tabletop_full/single_hand_demo_v2/graspdata/core_bottle_46910c75d17ef8554c6e2707eea5c15e/tabletop_ur10e/scale008_pose005_0_grasp.npy",
+    "evaluation_object_pose_max_abs_delta": 0.0,
+    "evaluation_object_scale_delta": 0.0,
+    "evaluation_scene_reference_matches": true,
+    "saved_bodex_object_pose_max_abs_delta": 0.0,
+    "saved_bodex_object_scale_max_abs_delta": 0.0,
+    "saved_bodex_surface_path": "object/DGN_2k/processed_data/core_bottle_46910c75d17ef8554c6e2707eea5c15e/mesh/simplified.obj",
+    "bodex_scene_reference_matches": true,
+    "bodex_joint_names_match": true,
+    "stage_deltas": {
+      "pregrasp": {
+        "bodex_to_formatted_qpos_max_abs": 0.0,
+        "formatted_to_success_qpos_max_abs": 0.0,
+        "formatted_to_success_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "grasp": {
+        "bodex_to_formatted_qpos_max_abs": 0.0,
+        "formatted_to_success_qpos_max_abs": 0.0,
+        "formatted_to_success_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "squeeze": {
+        "bodex_to_formatted_qpos_max_abs": 0.0,
+        "formatted_to_success_qpos_max_abs": 0.0,
+        "formatted_to_success_translation_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  },
+  "same_count_seed0_mesh_sample_minus_mesh_bounds_m": [
+    [
+      0.00015607811938612298,
+      0.000442495873691065,
+      1.6492515914978006e-05
+    ],
+    [
+      -9.415623658899641e-05,
+      -7.786795375565715e-05,
+      -0.005386746221016758
+    ]
+  ]
+}

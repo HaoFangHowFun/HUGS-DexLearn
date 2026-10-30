@@ -3821,20 +3821,33 @@ def task_visualize_robot(config: DictConfig) -> None:
 
         Args:
             sample_file: Saved sample path used to recover the source partial
-                point-cloud path.
+                point-cloud path when needed.
             scene_cfg: Scene configuration payload referenced by the sample.
 
         Returns:
             Subsampled point cloud array used by the robot visualization. The
-            same source pc path is subsampled once and then reused across
+            same source pc path and scene are subsampled once and reused across
             candidates from the same scene.
         """
-        pc_path = recover_pc_path(sample_file, scene_cfg, config)
-        if pc_path not in robot_pc_cache:
+        pc_source = str(OmegaConf.select(config, "test_data.pc_source", default="partial"))
+        scene_path = os.path.realpath(
+            os.path.join(config.test_data.object_path, "scene_cfg", scene_cfg["scene_id"] + ".npy")
+        )
+        if pc_source == "complete":
+            obj_name, scale, rotation, translation = extract_object_meta(scene_cfg, scene_path)
+            pc_path = os.path.join(config.test_data.object_path, "processed_data", obj_name, "complete_point_cloud.npy")
+        else:
+            pc_path = recover_pc_path(sample_file, scene_cfg, config)
+        cache_key = (os.path.realpath(pc_path), scene_path, pc_source)
+        if cache_key not in robot_pc_cache:
             raw_pc = np.load(pc_path, allow_pickle=True)
             idx = np.random.choice(raw_pc.shape[0], config.test_data.num_points, replace=True)
-            robot_pc_cache[pc_path] = raw_pc[idx]
-        return robot_pc_cache[pc_path]
+            pc = raw_pc[idx]
+            if pc_source == "complete":
+                # Saved hand poses are already decentered into the world frame.
+                pc = transform_complete_pc(pc, scale, rotation, translation)
+            robot_pc_cache[cache_key] = pc
+        return robot_pc_cache[cache_key]
 
     def build_robot_scene_records(sample_records):
         scene_records = []

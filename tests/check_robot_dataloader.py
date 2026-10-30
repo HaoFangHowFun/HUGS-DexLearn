@@ -220,7 +220,7 @@ def main(config: DictConfig) -> None:
     Logger(config)
     flatten_multidex_data_config(config.data)
 
-    target_grasp_type_ids = [1, 2, 3, 4, 5]
+    target_grasp_type_ids = [3]
     train_dataset = create_dataset(config, mode="train")
 
     config.algo.batch_size = int(cfg_select(config, "check_batch_size", 4))

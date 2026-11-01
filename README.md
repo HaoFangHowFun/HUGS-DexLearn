@@ -121,3 +121,9 @@ Configuration and CPU model/export tests have been validated; full training and 
 ## License
 
 [Research use only](RESEARCH_ONLY.md). Third-party code and assets retain their original terms. See the [HUGS citation](https://github.com/hugs-dex/HUGS-Main#citation).
+
+## Sharpa Wave integration
+
+See [Sharpa integration and validation](docs/sharpa_integration.md). The sibling
+`HUGS-Sharpa-Assets` repository is required. For the retained BODex 50-sphere
+configuration and cross-project scope, see `HUGS-BODex/docs/sharpa_project_state.md`.

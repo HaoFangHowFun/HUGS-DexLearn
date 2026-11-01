@@ -1,0 +1,34 @@
+# Standalone FK/mesh validation config, not a dataset or training preset.
+# Paths are relative to the HUGS-DexLearn repository root.
+urdf_path: ../HUGS-Sharpa-Assets/urdf/left_sharpa_wave_with_flange.urdf
+mesh_dir_path: ../HUGS-Sharpa-Assets/urdf
+base_link: left_hand_flange
+joint_names:
+- left_thumb_CMC_FE
+- left_thumb_CMC_AA
+- left_thumb_MCP_FE
+- left_thumb_MCP_AA
+- left_thumb_IP
+- left_index_MCP_FE
+- left_index_MCP_AA
+- left_index_PIP
+- left_index_DIP
+- left_middle_MCP_FE
+- left_middle_MCP_AA
+- left_middle_PIP
+- left_middle_DIP
+- left_ring_MCP_FE
+- left_ring_MCP_AA
+- left_ring_PIP
+- left_ring_DIP
+- left_pinky_CMC
+- left_pinky_MCP_FE
+- left_pinky_MCP_AA
+- left_pinky_PIP
+- left_pinky_DIP
+tip_link_names:
+- left_thumb_fingertip
+- left_index_fingertip
+- left_middle_fingertip
+- left_ring_fingertip
+- left_pinky_fingertip
